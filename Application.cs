@@ -21,8 +21,11 @@ namespace GraphDemo
             {
                 // build the menu
                 var menu = new MenuBuilder<ApplicationOption>()
-                    .AddOption(1, "Create a song", ApplicationOption.CreateSong)
-                    .AddOption(2, "Exit", ApplicationOption.ExitProgram)
+                    .AddOption(1, "Create artist", ApplicationOption.CreateArtist)
+                    .AddOption(2, "Create a user", ApplicationOption.CreateUser)
+                    .AddOption(3, "Like an artist", ApplicationOption.LikeArtist)
+                    .AddOption(4, "Recommend artist", ApplicationOption.RecommendArtist)
+                    .AddOption(5, "Exit", ApplicationOption.ExitProgram)
                     .AddPrompText("Please select an Option: ")
                     .Build();
 

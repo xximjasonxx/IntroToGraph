@@ -15,8 +15,14 @@ namespace GraphDemo.Commands
         {
             switch (option)
             {
-                case ApplicationOption.CreateSong:
-                    return new CreateSongCommand(_querySource);
+                case ApplicationOption.CreateArtist:
+                    return new CreateArtistCommand(_querySource);
+                case ApplicationOption.CreateUser:
+                    return new CreateUserCommand(_querySource);
+                case ApplicationOption.LikeArtist:
+                    return new LikeArtistCommand(_querySource);
+                case ApplicationOption.RecommendArtist:
+                    return new RecommendArtistCommand(_querySource);
             }
 
             throw new InvalidOperationException("The option provided does not have a command");

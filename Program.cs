@@ -24,8 +24,6 @@ var host = Host.CreateDefaultBuilder(args)
         services.AddTransient<CommandResolver>();
         services.AddHostedService<Application>();
     });
-    
+
 // run the host
 host.Start();
-
-Console.WriteLine("End");

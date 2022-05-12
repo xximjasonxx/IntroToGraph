@@ -3,7 +3,10 @@ namespace GraphDemo
 {
     public enum ApplicationOption
     {
-        CreateSong,
+        CreateArtist,
+        CreateUser,
+        LikeArtist,
+        RecommendArtist,
         ExitProgram
     }
 }
