@@ -5,7 +5,5 @@ namespace GraphDemo.Entities
         public Guid Id { get; init; }
 
         public abstract string partitionKey { get; }
-
-        public abstract string label { get; }
     }
 }

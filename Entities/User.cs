@@ -7,8 +7,6 @@ namespace GraphDemo.Entities
 		public string LastName { get; set; }
 
 		public override string partitionKey => LastName.ToLower().Substring(0, 1);
-
-		public override string label => FirstName + LastName;
     }
 }
 

@@ -33,5 +33,26 @@ namespace GraphDemo.Property
 
             setter.Invoke(availableOptions[selectedOption]);
         }
+
+        public void SetProperty<TSelect>(string promptText, string titleText, IList<TSelect> availableOptions, Func<TSelect, string> objectText, Action<TSelect> setter)
+        {
+            Console.WriteLine(titleText);
+            for (int i=0; i<availableOptions.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}) {objectText.Invoke(availableOptions[i])}");
+            }
+
+            Console.Write(promptText);
+            var selectedIndex = Console.ReadLine()?.AsInt();
+            if (selectedIndex.HasValue == false)
+                throw new InvalidOperationException("Did not select a valid option");
+
+            var selectedOption = selectedIndex.Value - 1;
+            var selection = availableOptions.ElementAtOrDefault(selectedOption);
+            if (selection == null)
+                throw new InvalidOperationException("Selected option is out of range of options");
+
+            setter.Invoke(selection);
+        }
     }
 }

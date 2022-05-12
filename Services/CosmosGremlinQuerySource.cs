@@ -39,10 +39,17 @@ namespace GraphDemo.Services
                 .AddV<TType>(vertex)
                 .FirstAsync();
         }
+
+        public async Task<IList<TType>> GetVertices<TType>() where TType : class
+        {
+            return (await GremlinQuerySource
+                .V<TType>()).ToList();
+        }
     }
 
     public interface IQuerySource
     {
         Task<TType> AddVertex<TType>(TType vertex) where TType : class;
+        Task<IList<TType>> GetVertices<TType>() where TType : class;
     }
 }
