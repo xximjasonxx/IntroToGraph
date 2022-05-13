@@ -24,7 +24,7 @@ namespace GraphDemo.Commands
             propertyWriter.SetProperty("Enter Last Name: ", value => user.LastName = value);
 
             // save the value
-            var createdUser = await _querySource.AddVertex(user);
+            var createdUser = await _querySource.AddVertexAsync(user);
             Console.WriteLine("User Added");
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using GraphDemo.Engine;
 using GraphDemo.Entities;
 using GraphDemo.Property;
 using GraphDemo.Services;
@@ -8,12 +9,12 @@ namespace GraphDemo.Commands
 	public class MakeRecommendationCommand : ICommand
 	{
 		private readonly IQuerySource _querySource;
-		private readonly IGetRecommendationService _getRecommendationService;
+		private readonly IRecommendationEngine _recommendationEngine;
 
-		public MakeRecommendationCommand(IQuerySource querySource, IGetRecommendationService getRecommendationService)
+		public MakeRecommendationCommand(IQuerySource querySource, IRecommendationEngine recommendationEngine)
 		{
 			_querySource = querySource;
-			_getRecommendationService = getRecommendationService;
+			_recommendationEngine = recommendationEngine;
 		}
 
         public async Task ExecuteAsync()
@@ -31,10 +32,10 @@ namespace GraphDemo.Commands
                 setter: user => selectedUserId = user.Id);
 
 			// get the recommendations for the user
-			var recommendation = await _getRecommendationService.GetRecommendationAsync(selectedUserId);
+			var recommendation = await _recommendationEngine.GetRecommendationForUserAsync(users.First(x => x.Id == selectedUserId));
 
 			// ask for acceptance
-			Console.Write("Accept Recommendation (y/n): ");
+			/*Console.Write("Accept Recommendation (y/n): ");
 			var acceptYes = Console.ReadLine()?.ToLower() == "y";
 
 			// if yes, create the link
@@ -47,7 +48,7 @@ namespace GraphDemo.Commands
 				};
 
 				await _querySource.AddEdgeAsync(likeArtist);
-			}
+			}*/
         }
     }
 }

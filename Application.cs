@@ -8,10 +8,12 @@ namespace GraphDemo
     public class Application : IHostedService
     {
         public readonly IQuerySource _querySource;
+        public readonly IGetRecommendationService _getRecommendationService;
 
-        public Application(IQuerySource querySource)
+        public Application(IQuerySource querySource, IGetRecommendationService getRecommendationService)
         {
             _querySource = querySource;
+            _getRecommendationService = getRecommendationService;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -24,7 +26,7 @@ namespace GraphDemo
                     .AddOption(2, "Create a user", () => new CreateUserCommand(_querySource))
                     .AddOption(3, "Like an artist", () => new LikeArtistCommand(_querySource))
                     .AddOption(4, "Make friend", () => new MakeFriendCommand(_querySource))
-                    .AddOption(5, "Recommend artist", () => new MakeRecommendationCommand(_querySource))
+                    .AddOption(5, "Recommend artist", () => new MakeRecommendationCommand(_querySource, _getRecommendationService))
                     .AddExitOption(6, "Exit")
                     .AddPrompText("Please select an Option: ")
                     .Build();

@@ -40,7 +40,7 @@ namespace GraphDemo.Commands
                 setter: artist => likedArtist.ArtistId = artist.Id);
 
             // add the edge
-            await _querySource.AddEdgeAsync(likedArtist);
+            await _querySource.AddEdge(likedArtist);
             Console.WriteLine("Edge Added");
         }
     }

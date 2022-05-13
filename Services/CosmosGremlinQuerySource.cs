@@ -34,7 +34,7 @@ namespace GraphDemo.Services
             }   
         }
 
-        public async Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge
+        public async Task AddEdge<TEdge>(TEdge edge) where TEdge : Edge
         {
             await GremlinQuerySource
                 .V(edge.FromId)
@@ -49,6 +49,37 @@ namespace GraphDemo.Services
                 .FirstAsync();
         }
 
+        public async Task<IList<TReturnVertex>> GetEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex)
+            where TSourceVertex : Vertex
+            where TReturnVertex : Vertex
+            where TEdge : Edge
+        {
+            var returnArray = await GremlinQuerySource
+                .V<TSourceVertex>(sourceVertex.Id)
+                .Out<TEdge>()
+                .OfType<TReturnVertex>()
+                .ToArrayAsync();
+
+            return returnArray.ToList();
+        }
+
+        public async Task<IList<TEdge>> GetEdges<TVertex, TEdge>(TVertex vertex) where TVertex : Vertex
+            where TEdge : Edge
+        {
+            return (await GremlinQuerySource
+                .V<TVertex>(vertex.Id)
+                .OutE<TEdge>()
+                .ToArrayAsync())
+                .ToList();
+        }
+
+        public async Task<TVertex> GetVertex<TVertex>(Guid id) where TVertex : Vertex
+        {
+            return await GremlinQuerySource
+                .V<TVertex>(id)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex
         {
             return (await GremlinQuerySource
@@ -60,6 +91,13 @@ namespace GraphDemo.Services
     {
         Task<TVertex> AddVertex<TVertex>(TVertex vertex) where TVertex : Vertex;
         Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex;
-        Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge;
+        Task<TVertex> GetVertex<TVertex>(Guid id) where TVertex : Vertex;
+
+        Task AddEdge<TEdge>(TEdge edge) where TEdge : Edge;
+        Task<IList<TEdge>> GetEdges<TVertex, TEdge>(TVertex vertex) where TVertex : Vertex
+            where TEdge : Edge;
+        Task<IList<TReturnVertex>> GetEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertext) where TSourceVertex : Vertex
+            where TReturnVertex : Vertex
+            where TEdge : Edge;
     }
 }

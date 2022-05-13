@@ -39,7 +39,7 @@ namespace GraphDemo.Commands
                 setter: user => friendLink.TargetFriendId = user.Id);
 
             // create the link
-            await _querySource.AddEdgeAsync(friendLink);
+            await _querySource.AddEdge(friendLink);
             Console.WriteLine("Edge Added");
         }
     }
