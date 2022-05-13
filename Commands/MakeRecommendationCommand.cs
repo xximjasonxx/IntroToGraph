@@ -33,23 +33,33 @@ namespace GraphDemo.Commands
 
 			// get the recommendations for the user
 			var recommendation = await _recommendationEngine.GetRecommendationForUserAsync(users.First(x => x.Id == selectedUserId));
+			Console.WriteLine();
 
-			// ask for acceptance
-			/*Console.Write("Accept Recommendation (y/n): ");
-			var acceptYes = Console.ReadLine()?.ToLower() == "y";
+			if (recommendation == null)
+            {
+				Console.WriteLine("Could not make a recommendation");
+            }
+			else
+            {
+				// ask for acceptance
+				Console.WriteLine($"You might like: {recommendation.ArtistName}");
+				Console.Write("Accept Recommendation (y/n): ");
+				var acceptYes = Console.ReadLine()?.ToLower() == "y";
 
-			// if yes, create the link
-			if (acceptYes)
-			{
-				var likeArtist = new LikeArtist
+				// if yes, create the link
+				if (acceptYes)
 				{
-					UserId = selectedUserId,
-					ArtistId = recommendation.ArtistId
-				};
+					var likeArtist = new LikeArtist
+					{
+						UserId = selectedUserId,
+						ArtistId = recommendation.ArtistId
+					};
 
-				await _querySource.AddEdgeAsync(likeArtist);
-			}*/
-        }
+					await _querySource.AddEdge(likeArtist);
+				}
+			}
+			Console.WriteLine();
+		}
     }
 }
 

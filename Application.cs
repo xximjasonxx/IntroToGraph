@@ -1,4 +1,5 @@
 using GraphDemo.Commands;
+using GraphDemo.Engine;
 using GraphDemo.MenuView;
 using GraphDemo.Services;
 using Microsoft.Extensions.Hosting;
@@ -8,12 +9,12 @@ namespace GraphDemo
     public class Application : IHostedService
     {
         public readonly IQuerySource _querySource;
-        public readonly IGetRecommendationService _getRecommendationService;
+        public readonly IRecommendationEngine _recommendationEngine;
 
-        public Application(IQuerySource querySource, IGetRecommendationService getRecommendationService)
+        public Application(IQuerySource querySource, IRecommendationEngine recommendationEngine)
         {
             _querySource = querySource;
-            _getRecommendationService = getRecommendationService;
+            _recommendationEngine = recommendationEngine;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -26,7 +27,7 @@ namespace GraphDemo
                     .AddOption(2, "Create a user", () => new CreateUserCommand(_querySource))
                     .AddOption(3, "Like an artist", () => new LikeArtistCommand(_querySource))
                     .AddOption(4, "Make friend", () => new MakeFriendCommand(_querySource))
-                    .AddOption(5, "Recommend artist", () => new MakeRecommendationCommand(_querySource, _getRecommendationService))
+                    .AddOption(5, "Recommend artist", () => new MakeRecommendationCommand(_querySource, _recommendationEngine))
                     .AddExitOption(6, "Exit")
                     .AddPrompText("Please select an Option: ")
                     .Build();

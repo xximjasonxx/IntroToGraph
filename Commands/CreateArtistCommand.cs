@@ -23,7 +23,7 @@ namespace GraphDemo.Commands
             propertyWriter.SetProperty("Select Genre: ", Constants.AvailableGenres, value => artist.Genre = value);
 
             // save the song
-            var createdSong = await _querySource.AddVertexAsync(artist);
+            var createdSong = await _querySource.AddVertex(artist);
             Console.WriteLine("Artist Added");
         }
     }

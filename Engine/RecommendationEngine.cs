@@ -31,16 +31,67 @@ namespace GraphDemo.Engine
 				.Select(x => x.Genre)
 				.ToList();
 
-			foreach (var genre in genresOrderedByLikedFrequency)
-            {
-				// get the user's friends
-				var friends = await _querySource.GetEdgedVertices<User, User, Friend>(user);
+			// search the likes of our connected friends
+			var friends = await _querySource.GetEdgedVertices<User, User, Friend>(user);
+			var recommendation = await SearchFriends(genresOrderedByLikedFrequency, friends, likedArtists);
+			if (recommendation != null)
+				return recommendation;
+
+
+			// search all available artists using Genre as a guidepost
+			var allArtists = await _querySource.GetVertices<Artist>();
+			var availableArtists = allArtists.Filter(likedArtists).ToList();
+			recommendation = await SearchAll(genresOrderedByLikedFrequency, availableArtists);
+			if (recommendation != null)
+				return recommendation;
+
+
+			// just pick a random one from the set available
+			recommendation = await PickRandom(availableArtists);
+			if (recommendation != null)
+				return recommendation;
+
+			// nothing is available - return null
+			return null;
+		}
+
+		async Task<Recommendation> SearchFriends(IList<string> genrePreferenceOrder, IList<User> friends, IList<Artist> userLikedArtists)
+        {
+			foreach (var genre in genrePreferenceOrder)
+			{
+				// look through our friends likes for this genre
 				foreach (var friend in friends)
-                {
+				{
 					var friendLikedArtists = await _querySource.GetEdgedVertices<User, Artist, LikeArtist>(friend);
-					var potentialNewArtist = friendLikedArtists.Filter(likedArtists).FirstOrDefault();
-                }
-            }
+					var potentialNewArtist = friendLikedArtists.Filter(userLikedArtists).FirstOrDefault();
+					if (potentialNewArtist != null)
+						return new Recommendation { ArtistId = potentialNewArtist.Id, ArtistName = potentialNewArtist.Name };
+				}
+			}
+
+			return null;
+		}
+
+		async Task<Recommendation> SearchAll(IList<string> genrePreferenceOrder, IList<Artist> artists)
+        {
+			foreach (var genre in genrePreferenceOrder)
+			{
+				var potentialNewArtist = artists.FirstOrDefault(x => x.Genre == genre);
+				if (potentialNewArtist != null)
+					return new Recommendation { ArtistId = potentialNewArtist.Id, ArtistName = potentialNewArtist.Name };
+			}
+
+			return null;
+		}
+
+		async Task<Recommendation> PickRandom(IList<Artist> availableArtists)
+        {
+			var random = new Random(DateTime.Now.Second);
+			var recommendedArtist = availableArtists.ElementAtOrDefault(random.Next(0, availableArtists.Count - 1));
+			if (recommendedArtist != null)
+				return new Recommendation { ArtistId = recommendedArtist.Id, ArtistName = recommendedArtist.Name };
+
+			return null;
 		}
     }
 
