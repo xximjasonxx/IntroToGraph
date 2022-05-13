@@ -20,6 +20,7 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddTransient<IQuerySource, CosmosGremlinQuerySource>();
+        services.AddTransient<IGetRecommendationService, GetRecommendationService>();
         services.AddHostedService<Application>();
     });
 

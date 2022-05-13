@@ -2,6 +2,7 @@
 using ExRam.Gremlinq.Core;
 using ExRam.Gremlinq.Core.Models;
 using GraphDemo.Entities;
+using GraphDemo.Models;
 using Microsoft.Extensions.Configuration;
 using static ExRam.Gremlinq.Core.GremlinQuerySource;
 
@@ -57,8 +58,8 @@ namespace GraphDemo.Services
 
     public interface IQuerySource
     {
-        Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge;
         Task<TVertex> AddVertex<TVertex>(TVertex vertex) where TVertex : Vertex;
         Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex;
+        Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge;
     }
 }
