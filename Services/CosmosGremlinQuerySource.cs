@@ -33,23 +33,32 @@ namespace GraphDemo.Services
             }   
         }
 
-        public async Task<TType> AddVertex<TType>(TType vertex) where TType : class
+        public async Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge
+        {
+            await GremlinQuerySource
+                .V(edge.FromId)
+                .AddE<TEdge>(edge)
+                .To(_ => _.V(edge.ToId));
+        }
+
+        public async Task<TVertex> AddVertex<TVertex>(TVertex vertex) where TVertex : Vertex
         {
             return await GremlinQuerySource
-                .AddV<TType>(vertex)
+                .AddV<TVertex>(vertex)
                 .FirstAsync();
         }
 
-        public async Task<IList<TType>> GetVertices<TType>() where TType : class
+        public async Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex
         {
             return (await GremlinQuerySource
-                .V<TType>()).ToList();
+                .V<TVertex>()).ToList();
         }
     }
 
     public interface IQuerySource
     {
-        Task<TType> AddVertex<TType>(TType vertex) where TType : class;
-        Task<IList<TType>> GetVertices<TType>() where TType : class;
+        Task AddEdgeAsync<TEdge>(TEdge edge) where TEdge : Edge;
+        Task<TVertex> AddVertex<TVertex>(TVertex vertex) where TVertex : Vertex;
+        Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex;
     }
 }

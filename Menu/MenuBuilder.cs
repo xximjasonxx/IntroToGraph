@@ -1,31 +1,45 @@
-namespace GraphDemo.Menu
+using GraphDemo.Commands;
+
+namespace GraphDemo.MenuView
 {
-    public class MenuBuilder<TReturn> where TReturn : System.Enum
+    public class MenuBuilder
     {
         private string? _promptText;
-        private List<MenuOption<TReturn>> _options = new List<MenuOption<TReturn>>();
+        private List<MenuOption> _options = new List<MenuOption>();
 
-        public MenuBuilder<TReturn> AddPrompText(string promptText)
+        public MenuBuilder AddPrompText(string promptText)
         {
             _promptText = promptText;
             return this;
         }
 
-        public MenuBuilder<TReturn> AddOption(int optionNumber, string optionText, TReturn returnValue)
+        public MenuBuilder AddOption(int optionNumber, string optionText, Func<ICommand> actionCommand)
         {
-            _options.Add(new MenuOption<TReturn>
+            _options.Add(new MenuOption
             {
                 OptionNumber = optionNumber,
                 OptionText = optionText,
-                ReturnValue = returnValue
+                Command = actionCommand.Invoke()
             });
 
             return this;
         }
 
-        public Menu<TReturn> Build()
+        public MenuBuilder AddExitOption(int optionNumber, string optionText)
         {
-            return new Menu<TReturn>(
+            _options.Add(new MenuOption
+            {
+                OptionNumber = optionNumber,
+                OptionText = optionText,
+                IsExit = true
+            });
+
+            return this;
+        }
+
+        public MenuView Build()
+        {
+            return new MenuView(
                 promptText: string.IsNullOrEmpty(_promptText) ? "Please select an Option: " : _promptText,
                 options: _options
             );

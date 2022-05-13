@@ -1,7 +1,6 @@
 ﻿
 using System.Reflection;
 using GraphDemo;
-using GraphDemo.Commands;
 using GraphDemo.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +20,6 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
     {
         services.AddTransient<IQuerySource, CosmosGremlinQuerySource>();
-        services.AddTransient<CommandResolver>();
         services.AddHostedService<Application>();
     });
 

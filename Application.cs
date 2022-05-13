@@ -1,52 +1,54 @@
 using GraphDemo.Commands;
-using GraphDemo.Menu;
+using GraphDemo.MenuView;
+using GraphDemo.Services;
 using Microsoft.Extensions.Hosting;
 
 namespace GraphDemo
 {
     public class Application : IHostedService
     {
-        public readonly CommandResolver _commandResolver;
+        public readonly IQuerySource _querySource;
 
-        public Application(CommandResolver commandResolver)
+        public Application(IQuerySource querySource)
         {
-            _commandResolver = commandResolver;
+            _querySource = querySource;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            ApplicationOption selectedAction;
-
             do
             {
                 // build the menu
-                var menu = new MenuBuilder<ApplicationOption>()
-                    .AddOption(1, "Create artist", ApplicationOption.CreateArtist)
-                    .AddOption(2, "Create a user", ApplicationOption.CreateUser)
-                    .AddOption(3, "Like an artist", ApplicationOption.LikeArtist)
-                    .AddOption(4, "Recommend artist", ApplicationOption.RecommendArtist)
-                    .AddOption(5, "Exit", ApplicationOption.ExitProgram)
+                var menu = new MenuBuilder()
+                    .AddOption(1, "Create artist", () => new CreateArtistCommand(_querySource))
+                    .AddOption(2, "Create a user", () => new CreateUserCommand(_querySource))
+                    .AddOption(3, "Like an artist", () => new LikeArtistCommand(_querySource))
+                    .AddOption(4, "Recommend artist", () => new RecommendArtistCommand(_querySource))
+                    .AddOption(5, "Make friend", () => new MakeFriendCommand(_querySource))
+                    .AddExitOption(6, "Exit")
                     .AddPrompText("Please select an Option: ")
                     .Build();
 
                 menu.Show();
                 var optionSelectedRaw = Console.ReadLine();
-                selectedAction = menu.SelectOption(optionSelectedRaw ?? string.Empty);
+                var selectedOption = menu.SelectOption(optionSelectedRaw ?? string.Empty);
                 Console.WriteLine();
 
-                if (selectedAction != ApplicationOption.ExitProgram)
-                {
-                    var command = _commandResolver.CreateCommand(selectedAction);
-                    await command.ExecuteAsync();
-                    Console.WriteLine();
-                }
+                if (selectedOption.IsExit)
+                    break;      // exit the program
 
-            } while (selectedAction != ApplicationOption.ExitProgram);
+                await selectedOption.Command.ExecuteAsync();
+                Console.WriteLine();
+
+            } while (true);
+
+            await this.StopAsync(cancellationToken);
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken)
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("End");
+            return Task.CompletedTask;
         }
     }
 }

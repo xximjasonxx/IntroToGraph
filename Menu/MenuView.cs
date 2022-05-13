@@ -1,13 +1,13 @@
 using GraphDemo.Extensions;
 
-namespace GraphDemo.Menu
+namespace GraphDemo.MenuView
 {
-    public class Menu<TReturn> where TReturn : System.Enum
+    public class MenuView
     {
         private readonly string _promptText;
-        private readonly IList<MenuOption<TReturn>> _options;
+        private readonly IList<MenuOption> _options;
 
-        public Menu(string promptText, IList<MenuOption<TReturn>> options)
+        public MenuView(string promptText, IList<MenuOption> options)
         {
             _promptText = promptText;
             _options = options;
@@ -17,13 +17,13 @@ namespace GraphDemo.Menu
         {
             foreach (var option in _options)
             {
-                Console.WriteLine($" {option.OptionNumber}) {option.OptionText}");
+                Console.WriteLine($"{option.OptionNumber}) {option.OptionText}");
             }
 
             Console.Write(_promptText);
         }
 
-        public TReturn SelectOption(string optionSelectedRaw)
+        public MenuOption SelectOption(string optionSelectedRaw)
         {
             var optionSelectedParsed = optionSelectedRaw.AsInt();
             if (!optionSelectedParsed.HasValue)
@@ -37,7 +37,7 @@ namespace GraphDemo.Menu
             if (selectedOption == null)
                 throw new InvalidOperationException("Option provided was not valid");
 
-            return selectedOption.ReturnValue;
+            return selectedOption;
         }
     }
 }
