@@ -40,6 +40,10 @@ namespace GraphDemo.Commands
 
             // create the link
             await _querySource.AddEdge(friendLink);
+
+            friendLink.Reverse();
+            await _querySource.AddEdge(friendLink);
+
             Console.WriteLine("Edge Added");
         }
     }

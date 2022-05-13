@@ -17,7 +17,7 @@ namespace GraphDemo.Engine
 
         public async Task<Recommendation> GetRecommendationForUserAsync(User user)
         {
-			var likedArtists = await _querySource.GetEdgedVertices<User, Artist, LikeArtist>(user);
+			var likedArtists = await _querySource.GetSingleEdgedVertices<User, Artist, LikeArtist>(user);
 			var genresOrderedByLikedFrequency = Constants.AvailableGenres
 				.Select(genre => new
 				{
@@ -32,7 +32,7 @@ namespace GraphDemo.Engine
 				.ToList();
 
 			// search the likes of our connected friends
-			var friends = await _querySource.GetEdgedVertices<User, User, Friend>(user);
+			var friends = await _querySource.GetDoubleEdgedVertices<User, User, Friend>(user);
 			var recommendation = await SearchFriends(genresOrderedByLikedFrequency, friends, likedArtists);
 			if (recommendation != null)
 				return recommendation;
@@ -62,7 +62,7 @@ namespace GraphDemo.Engine
 				// look through our friends likes for this genre
 				foreach (var friend in friends)
 				{
-					var friendLikedArtists = await _querySource.GetEdgedVertices<User, Artist, LikeArtist>(friend);
+					var friendLikedArtists = await _querySource.GetSingleEdgedVertices<User, Artist, LikeArtist>(friend);
 					var potentialNewArtist = friendLikedArtists.Filter(userLikedArtists).FirstOrDefault();
 					if (potentialNewArtist != null)
 						return new Recommendation { ArtistId = potentialNewArtist.Id, ArtistName = potentialNewArtist.Name };

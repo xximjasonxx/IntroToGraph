@@ -8,5 +8,15 @@ namespace GraphDemo.Entities
         public override Guid FromId => SourceFriendId;
 
         public override Guid ToId => TargetFriendId;
+
+        public Friend Reverse()
+        {
+            return new Friend
+            {
+                Id = Guid.NewGuid(),
+                SourceFriendId = TargetFriendId,
+                TargetFriendId = SourceFriendId
+            };
+        }
     }
 }

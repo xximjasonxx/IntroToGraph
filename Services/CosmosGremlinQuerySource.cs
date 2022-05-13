@@ -49,7 +49,7 @@ namespace GraphDemo.Services
                 .FirstAsync();
         }
 
-        public async Task<IList<TReturnVertex>> GetEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex)
+        public async Task<IList<TReturnVertex>> GetSingleEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex)
             where TSourceVertex : Vertex
             where TReturnVertex : Vertex
             where TEdge : Edge
@@ -85,6 +85,20 @@ namespace GraphDemo.Services
             return (await GremlinQuerySource
                 .V<TVertex>()).ToList();
         }
+
+        public async Task<IList<TReturnVertex>> GetDoubleEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex)
+            where TSourceVertex : Vertex
+            where TReturnVertex : Vertex
+            where TEdge : Edge
+        {
+            var returnArray = await GremlinQuerySource
+                .V<TSourceVertex>(sourceVertex.Id)
+                .Both<TEdge>()
+                .OfType<TReturnVertex>()
+                .ToArrayAsync();
+
+            return returnArray.ToList();
+        }
     }
 
     public interface IQuerySource
@@ -96,7 +110,12 @@ namespace GraphDemo.Services
         Task AddEdge<TEdge>(TEdge edge) where TEdge : Edge;
         Task<IList<TEdge>> GetEdges<TVertex, TEdge>(TVertex vertex) where TVertex : Vertex
             where TEdge : Edge;
-        Task<IList<TReturnVertex>> GetEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertext) where TSourceVertex : Vertex
+
+        Task<IList<TReturnVertex>> GetSingleEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex) where TSourceVertex : Vertex
+            where TReturnVertex : Vertex
+            where TEdge : Edge;
+
+        Task<IList<TReturnVertex>> GetDoubleEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex) where TSourceVertex : Vertex
             where TReturnVertex : Vertex
             where TEdge : Edge;
     }
