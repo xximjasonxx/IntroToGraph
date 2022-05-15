@@ -15,7 +15,7 @@ var host = Host.CreateDefaultBuilder(args)
     {
         configuration.SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json")
-            .AddUserSecrets(Assembly.GetExecutingAssembly(), optional: true)
+            .AddUserSecrets(Assembly.GetExecutingAssembly(), optional: false)
             .AddEnvironmentVariables();
     })
     .ConfigureServices((hostContext, services) =>

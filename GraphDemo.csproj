@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <UserSecretsId>b4d02f68-9380-458b-8fc4-e81357c9f0a7</UserSecretsId>
+    <UserSecretsId>dcc7a0d0-7a2a-4ce6-900d-e5141c71547c</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,8 +27,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Engine\" />
+    <None Remove="Entities\Support\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Engine\" />
+    <Folder Include="Entities\Support\" />
   </ItemGroup>
 </Project>

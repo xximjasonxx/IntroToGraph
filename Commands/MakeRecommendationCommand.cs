@@ -51,6 +51,7 @@ namespace GraphDemo.Commands
 				{
 					var likeArtist = new LikeArtist
 					{
+						Id = Guid.NewGuid(),
 						UserId = selectedUserId,
 						ArtistId = recommendation.ArtistId
 					};

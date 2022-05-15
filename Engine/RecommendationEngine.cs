@@ -3,6 +3,7 @@ using GraphDemo.Entities;
 using GraphDemo.Models;
 using GraphDemo.Services;
 using GraphDemo.Extensions;
+using GraphDemo.Entities.Support;
 
 namespace GraphDemo.Engine
 {
@@ -40,7 +41,7 @@ namespace GraphDemo.Engine
 
 			// search all available artists using Genre as a guidepost
 			var allArtists = await _querySource.GetVertices<Artist>();
-			var availableArtists = allArtists.Filter(likedArtists).ToList();
+			var availableArtists = allArtists.Filter(likedArtists, new ArtistEqualityComparer()).ToList();
 			recommendation = await SearchAll(genresOrderedByLikedFrequency, availableArtists);
 			if (recommendation != null)
 				return recommendation;
@@ -63,7 +64,9 @@ namespace GraphDemo.Engine
 				foreach (var friend in friends)
 				{
 					var friendLikedArtists = await _querySource.GetSingleEdgedVertices<User, Artist, LikeArtist>(friend);
-					var potentialNewArtist = friendLikedArtists.Filter(userLikedArtists).FirstOrDefault();
+					var potentialNewArtist = friendLikedArtists.Filter(userLikedArtists, new ArtistEqualityComparer())
+						.FirstOrDefault(x => x.Genre == genre);
+
 					if (potentialNewArtist != null)
 						return new Recommendation { ArtistId = potentialNewArtist.Id, ArtistName = potentialNewArtist.Name };
 				}

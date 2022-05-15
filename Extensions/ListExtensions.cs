@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using GraphDemo.Entities;
+
 namespace GraphDemo.Extensions
 {
 	public static class ListExtensions
 	{
-		public static IEnumerable<T> Filter<T>(this IList<T> sourceList, IList<T> filterList) where T : IEqualityComparer<T>
+		public static IList<T> Filter<T>(this IList<T> sourceList, IList<T> filterList, IEqualityComparer<T> comparer)
         {
-			foreach (var sourceItem in sourceList)
-            {
-				if (filterList.Any(x => x.Equals(sourceItem)) == false)
-					yield return sourceItem;
-            }
+			return sourceList
+				.Where(srcItem => filterList.Contains(srcItem, comparer) == false)
+				.ToList();
         }
 	}
 }
