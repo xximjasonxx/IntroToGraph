@@ -9,7 +9,7 @@ namespace GraphDemo.Entities
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
-		public override string partitionKey => LastName.ToLower().Substring(0, 1);
+		public override string partitionKey => LastName.ToLower()[..1];
 
 		[JsonIgnore]
 		public string Name => $"{FirstName} {LastName}";

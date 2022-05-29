@@ -99,6 +99,40 @@ namespace GraphDemo.Services
 
             return returnArray.ToList();
         }
+
+        public async Task DropAllVertices()
+        {
+            await GremlinQuerySource
+                .V()
+                .Drop();
+        }
+
+        public async Task<int> CountVertices<TVertex>() where TVertex : Vertex
+        {
+            var results = await GremlinQuerySource
+                .V<TVertex>();
+
+            return results.Count();
+        }
+
+        public async Task<int> CountEdges<TEdge>() where TEdge : Edge
+        {
+            var results = await GremlinQuerySource
+                .E<TEdge>();
+
+            return results.Count();
+        }
+
+        public async Task<int> CountVertexEdges<TVertex, TEdge>(TVertex vertex)
+            where TVertex : Vertex
+            where TEdge : Edge
+        {
+            var edges = await GremlinQuerySource
+                .V<TVertex>(vertex.Id)
+                .OutE<TEdge>();
+
+            return edges.Count();
+        }
     }
 
     public interface IQuerySource
@@ -106,9 +140,15 @@ namespace GraphDemo.Services
         Task<TVertex> AddVertex<TVertex>(TVertex vertex) where TVertex : Vertex;
         Task<IList<TVertex>> GetVertices<TVertex>() where TVertex : Vertex;
         Task<TVertex> GetVertex<TVertex>(Guid id) where TVertex : Vertex;
+        Task DropAllVertices();
+        Task<int> CountVertices<TVertex>() where TVertex : Vertex;
+        Task<int> CountEdges<TEdge>() where TEdge : Edge;
 
         Task AddEdge<TEdge>(TEdge edge) where TEdge : Edge;
         Task<IList<TEdge>> GetEdges<TVertex, TEdge>(TVertex vertex) where TVertex : Vertex
+            where TEdge : Edge;
+
+        Task<int> CountVertexEdges<TVertex, TEdge>(TVertex vertex) where TVertex : Vertex
             where TEdge : Edge;
 
         Task<IList<TReturnVertex>> GetSingleEdgedVertices<TSourceVertex, TReturnVertex, TEdge>(TSourceVertex sourceVertex) where TSourceVertex : Vertex

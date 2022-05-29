@@ -42,13 +42,13 @@ namespace GraphDemo.Engine
 			// search all available artists using Genre as a guidepost
 			var allArtists = await _querySource.GetVertices<Artist>();
 			var availableArtists = allArtists.Filter(likedArtists, new ArtistEqualityComparer()).ToList();
-			recommendation = await SearchAll(genresOrderedByLikedFrequency, availableArtists);
+			recommendation = SearchAll(genresOrderedByLikedFrequency, availableArtists);
 			if (recommendation != null)
 				return recommendation;
 
 
 			// just pick a random one from the set available
-			recommendation = await PickRandom(availableArtists);
+			recommendation = PickRandom(availableArtists);
 			if (recommendation != null)
 				return recommendation;
 
@@ -75,7 +75,7 @@ namespace GraphDemo.Engine
 			return null;
 		}
 
-		async Task<Recommendation> SearchAll(IList<string> genrePreferenceOrder, IList<Artist> artists)
+		Recommendation SearchAll(IList<string> genrePreferenceOrder, IList<Artist> artists)
         {
 			foreach (var genre in genrePreferenceOrder)
 			{
@@ -87,7 +87,7 @@ namespace GraphDemo.Engine
 			return null;
 		}
 
-		async Task<Recommendation> PickRandom(IList<Artist> availableArtists)
+		Recommendation PickRandom(IList<Artist> availableArtists)
         {
 			var random = new Random(DateTime.Now.Second);
 			var recommendedArtist = availableArtists.ElementAtOrDefault(random.Next(0, availableArtists.Count - 1));

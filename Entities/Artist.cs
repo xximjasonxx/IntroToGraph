@@ -9,6 +9,6 @@ namespace GraphDemo.Entities
 
         public string Genre { get; set; }
 
-        public override string partitionKey => Genre?.ToLower();
+        public override string partitionKey => Genre.ToLower();
     }
 }

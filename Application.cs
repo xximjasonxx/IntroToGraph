@@ -30,7 +30,10 @@ namespace GraphDemo
                         .AddOption(3, "Like an artist", () => new LikeArtistCommand(_querySource))
                         .AddOption(4, "Make friend", () => new MakeFriendCommand(_querySource))
                         .AddOption(5, "Recommend artist", () => new MakeRecommendationCommand(_querySource, _recommendationEngine))
-                        .AddExitOption(6, "Exit")
+                        .AddOption(6, "Get User Info", () => new GetUserInfoCommand(_querySource))
+                        .AddOption(7, "Get Artist Info", () => new GetArtistInfoCommand(_querySource))
+                        .AddOption(8, "Count data", () => new CountDataCommand(_querySource))
+                        .AddExitOption(9, "Exit")
                         .AddPrompText("Please select an Option: ")
                         .Build();
 
