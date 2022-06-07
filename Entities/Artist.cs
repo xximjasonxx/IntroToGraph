@@ -11,6 +11,6 @@ namespace GraphDemo.Entities
 
         public override string ItemType => "Artist";
 
-        public override string Id { get => $"{Name}|{Genre}"; }
+        public override string Id { get => $"{Name.Replace(" ", string.Empty)}|{Genre}"; }
     }
 }
