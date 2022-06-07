@@ -15,7 +15,7 @@ namespace GraphDemo.Commands
 
         public async Task ExecuteAsync()
         {
-            var artist = new Artist() { Id = Guid.NewGuid() };
+            var artist = new Artist();
             var propertyWriter = new PropertyWriter<Artist>();
 
             // ask for properties

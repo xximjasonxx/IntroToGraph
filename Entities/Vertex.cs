@@ -2,8 +2,8 @@ namespace GraphDemo.Entities
 {
     public abstract class Vertex
     {
-        public Guid Id { get; init; }
+        public abstract string Id { get; }
 
-        public abstract string partitionKey { get; }
+        public abstract string ItemType { get; }
     }
 }

@@ -4,8 +4,8 @@ namespace GraphDemo.Entities
     {
         public Guid Id { get; init; }
 
-        public abstract Guid FromId { get; }
+        public abstract string FromId { get; }
 
-        public abstract Guid ToId { get; }
+        public abstract string ToId { get; }
     }
 }

@@ -9,6 +9,8 @@ namespace GraphDemo.Entities
 
         public string Genre { get; set; }
 
-        public override string partitionKey => Genre.ToLower();
+        public override string ItemType => "Artist";
+
+        public override string Id { get => $"{Name}|{Genre}"; }
     }
 }

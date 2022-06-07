@@ -9,9 +9,9 @@ namespace GraphDemo.Entities
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
-		public override string partitionKey => LastName.ToLower()[..1];
+        public override string Id => $"{FirstName}{LastName}";
+        public override string ItemType => "User";
 
-		[JsonIgnore]
 		public string Name => $"{FirstName} {LastName}";
 
         public bool Equals(User? x, User? y)

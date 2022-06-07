@@ -25,7 +25,10 @@ namespace GraphDemo.Services
                     .ConfigureEnvironment(env => env
                         .UseModel(GraphModel
                             .FromBaseTypes<Vertex, Edge>(lookup => lookup
-                                .IncludeAssembliesOfBaseTypes())))
+                                .IncludeAssembliesOfBaseTypes())
+                            .ConfigureProperties(model => model
+                                .ConfigureElement<Vertex>(conf => conf
+                                    .IgnoreOnUpdate(x => x.ItemType)))))
                     .UseCosmosDb(config => config
                         .At(new Uri(_configuration["CosmosDb:ServerUri"]))
                         .OnDatabase(_configuration["CosmosDb:DatabaseName"])

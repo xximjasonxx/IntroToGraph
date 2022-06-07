@@ -2,12 +2,12 @@ namespace GraphDemo.Entities
 {
     public class LikeArtist : Edge
     {
-        public Guid ArtistId { get; set; }
+        public string ArtistId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
-        public override Guid FromId => UserId;
+        public override string FromId => UserId;
 
-        public override Guid ToId => ArtistId;
+        public override string ToId => ArtistId;
     }
 }

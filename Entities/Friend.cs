@@ -2,12 +2,12 @@ namespace GraphDemo.Entities
 {
     public class Friend : Edge
     {
-        public Guid SourceFriendId { get; set; }
-        public Guid TargetFriendId { get; set; }
+        public string SourceFriendId { get; set; }
+        public string TargetFriendId { get; set; }
 
-        public override Guid FromId => SourceFriendId;
+        public override string FromId => SourceFriendId;
 
-        public override Guid ToId => TargetFriendId;
+        public override string ToId => TargetFriendId;
 
         public Friend Reverse()
         {

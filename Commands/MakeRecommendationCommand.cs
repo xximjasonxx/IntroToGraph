@@ -23,7 +23,7 @@ namespace GraphDemo.Commands
 			var users = await _querySource.GetVertices<User>();
 			var propertyWriter = new PropertyWriter<User>();
 
-			Guid selectedUserId = Guid.Empty;
+			string selectedUserId = string.Empty;
             propertyWriter.SetProperty<User>(
                 promptText: "Pick user: ",
                 titleText: "Select a user to get recommendations for",
