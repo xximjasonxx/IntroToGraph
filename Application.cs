@@ -2,6 +2,7 @@ using GraphDemo.Commands;
 using GraphDemo.Engine;
 using GraphDemo.MenuView;
 using GraphDemo.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace GraphDemo
@@ -9,11 +10,14 @@ namespace GraphDemo
     public class Application : IHostedService
     {
         public readonly IQuerySource _querySource;
+        public readonly IConfiguration _configuration;
         public readonly IRecommendationEngine _recommendationEngine;
 
-        public Application(IQuerySource querySource, IRecommendationEngine recommendationEngine)
+        public Application(IQuerySource querySource, IRecommendationEngine recommendationEngine,
+            IConfiguration configuration)
         {
             _querySource = querySource;
+            _configuration = configuration;
             _recommendationEngine = recommendationEngine;
         }
 
@@ -33,7 +37,8 @@ namespace GraphDemo
                         .AddOption(6, "Get User Info", () => new GetUserInfoCommand(_querySource))
                         .AddOption(7, "Get Artist Info", () => new GetArtistInfoCommand(_querySource))
                         .AddOption(8, "Count data", () => new CountDataCommand(_querySource))
-                        .AddExitOption(9, "Exit")
+                        .AddOption(9, "Run Test Script", () => new TestCommand(_configuration))
+                        .AddExitOption(10, "Exit")
                         .AddPrompText("Please select an Option: ")
                         .Build();
 
