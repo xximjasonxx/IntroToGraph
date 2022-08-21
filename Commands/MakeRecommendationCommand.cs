@@ -19,28 +19,28 @@ namespace GraphDemo.Commands
 
         public async Task ExecuteAsync()
         {
-            // select the user to make a recommendation for
+        	// select the user to make a recommendation for
 			var users = await _querySource.GetVertices<User>();
 			var propertyWriter = new PropertyWriter<User>();
 
 			string selectedUserId = string.Empty;
-            propertyWriter.SetProperty<User>(
-                promptText: "Pick user: ",
-                titleText: "Select a user to get recommendations for",
-                availableOptions: users,
-                objectText: user => user.Name,
-                setter: user => selectedUserId = user.Id);
+						propertyWriter.SetProperty<User>(
+								promptText: "Pick user: ",
+								titleText: "Select a user to get recommendations for",
+								availableOptions: users,
+								objectText: user => user.Name,
+								setter: user => selectedUserId = user.Id);
 
 			// get the recommendations for the user
 			var recommendation = await _recommendationEngine.GetRecommendationForUserAsync(users.First(x => x.Id == selectedUserId));
 			Console.WriteLine();
 
 			if (recommendation == null)
-            {
+			{
 				Console.WriteLine("Could not make a recommendation");
-            }
+			}
 			else
-            {
+			{
 				// ask for acceptance
 				Console.WriteLine($"You might like: {recommendation.ArtistName}");
 				Console.Write("Accept Recommendation (y/n): ");
@@ -60,7 +60,7 @@ namespace GraphDemo.Commands
 				}
 			}
 			Console.WriteLine();
-		}
+        }
     }
 }
 

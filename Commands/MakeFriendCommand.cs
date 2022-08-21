@@ -41,6 +41,15 @@ namespace GraphDemo.Commands
             // create the link
             await _querySource.AddEdge(friendLink);
 
+            // create the reverse link
+            var reverseFriendLink = new Friend()
+            {
+                Id = Guid.NewGuid(),
+                SourceFriendId = friendLink.TargetFriendId,
+                TargetFriendId = friendLink.SourceFriendId
+            };
+            await _querySource.AddEdge(reverseFriendLink);
+
             Console.WriteLine("Edge Added");
         }
     }

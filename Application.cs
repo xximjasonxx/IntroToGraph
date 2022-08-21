@@ -37,7 +37,7 @@ namespace GraphDemo
                         .AddOption(6, "Get User Info", () => new GetUserInfoCommand(_querySource))
                         .AddOption(7, "Get Artist Info", () => new GetArtistInfoCommand(_querySource))
                         .AddOption(8, "Count data", () => new CountDataCommand(_querySource))
-                        .AddOption(9, "Drop all data", () => new DeleteAllCommand(_querySource))
+                        .AddOption(9, "Seed Database", () => new SeedDataCommand(_querySource))
                         .AddExitOption(10, "Exit")
                         .AddPrompText("Please select an Option: ")
                         .Build();
