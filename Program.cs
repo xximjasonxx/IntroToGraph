@@ -1,4 +1,5 @@
-﻿
+// This is the program file
+
 using System.Reflection;
 using GraphDemo;
 using GraphDemo.Engine;
