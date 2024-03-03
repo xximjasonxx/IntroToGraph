@@ -1,4 +1,6 @@
-﻿using System;
+// Adding a comment
+
+using System;
 
 namespace GraphDemo
 {
